@@ -1,0 +1,70 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<WeatherApp.Models.DailyWeather>
+@{
+    var todayWeather = Model?.First();
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Dashboard</title>
+    <link href="~/lib/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4 text-white">
+            <img src="~/images/cloudy.png" alt="weather Icon" height="60" width="60" />
+            Weather Dashboard
+            </h1>
+        <div class="row mb-4">
+            <div class="col-xl-6 col-sm-12">
+                <form method="post" asp-controller="Home" asp-action="Index">
+                    <div class="form-group">
+                        <label class="text-white" for="cityName">Enter City Name:</label>
+                        <input type="text" class="form-control mt-2" id="cityName" name="cityName" placeholder="E.g. New York, London" required />
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-2">Search</button>
+                </form>
+            </div>           
+        </div>
+        @if (Model != null)
+        {
+            <div class="row mt-2">
+                @foreach (var weather in Model)
+                {
+                    <div class="col-xl-4 div-sm-12">
+                        <div class="card text-white mb-4">
+                            <div class="card-header">
+                                <h4>@weather.ForecastDateTime.ToString("dddd")</h4>
+                                <h6>@weather.ForecastDateTime.ToShortDateString()</h6>
+                                <p>@weather.Condition</p>
+                            </div>                            
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <img src="@weather.IconUrl" alt="Weather Icon" height="70" width="70" />
+                                        <h3 class="card-title">@weather.CurrentTemp&deg;C</h3>
+                                     </div>
+                                     <div class="col-6">
+                                        <p>Humidity: @weather.Humidity%</p>
+                                        <p>Pressure: @weather.AtmosphericPressure hPa</p>
+                                        <p>Speed: @weather.WindSpeed.ToString("0.00") Km/h</p>
+                                      </div>
+                                 </div>                              
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else if(!ViewBag.InitialLoad) {
+            <p class="alert alert-danger">Could not find weather details for given City.</p>
+        }
+    </div>
+
+    <!-- Bootstrap JS and Popper.js (required for some Bootstrap components) -->
+
+</body>
+</html>
