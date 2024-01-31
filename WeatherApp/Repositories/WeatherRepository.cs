@@ -1,4 +1,4 @@
-﻿using System.Net.Http;
+using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using WeatherApp.Models;
@@ -24,7 +24,7 @@ namespace WeatherApp.Repositories
             var httpClient = _httpClientFactory.CreateClient();
             httpClient.BaseAddress = new Uri(_configuration["OpenWeatherApi:BaseAddress"]);
 
-            var url = $"/geo/1.0/direct?q={city}&limit=5&appid={_configuration["OpenWeatherApi:AppId"]}";
+            var url = $"/geo/1.0/direct?q={city}&limit=5&appid={_configuration["AppId"]}";
 
             var resp = await httpClient.GetAsync(url);
             if (resp.IsSuccessStatusCode)
@@ -41,7 +41,7 @@ namespace WeatherApp.Repositories
             var httpClient = _httpClientFactory.CreateClient();
             httpClient.BaseAddress = new Uri(_configuration["OpenWeatherApi:BaseAddress"]);
 
-            var url = $"/data/2.5/forecast?lat={latitude}&lon={longitude}&appid={_configuration["OpenWeatherApi:AppId"]}";
+            var url = $"/data/2.5/forecast?lat={latitude}&lon={longitude}&appid={_configuration["AppId"]}";
 
             var resp = await httpClient.GetAsync(url);
             var content = await resp.Content.ReadAsStringAsync();
